@@ -1,0 +1,169 @@
+pull one httpd image run the container with name app and take snapshot of running container and create 
+a image and push dockerhub.
+**************************************
+run one container 
+---->docker run -it -p --name app httpd
+
+then first we want to commit container 
+
+---->docker commit container_id repository_name 
+
+---->docker tag repo_name dockerhub_username/repo_name 
+
+  After login dockerhub account before push operation
+
+---->docker login
+---->docker push dockerhub_username/repo_username
+
+After pushing repo we want to delete container
+---->docker container prune
+---->docker logout
+---------------------------------------------------------------------------------
+ 
+
+1.pull one nginx image and run container with container name is app and assigned container port as 8000 and
+ check the application in the browser and in the linux terminal
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+DOCKER-COMPOSE
+***************
+1.
+ 
+first we have to check the version
+---->docker-compose --version
+
+---->vi docker-compose.yml     insert the below script dont give unwanted space 
+version: "3.3"
+services:
+  web:
+    image: nginx
+    ports:
+      - '8000:80'
+  db:
+      image: redis
+ ---->docker-compose up -d     it will pull the image and run the container
+
+then stop and remove container
+---->docker-compose down
+
+-----------------------------------------------------------------------------------
+2.
+firt we make directry
+---->mkdir app
+---->cd app/
+---->vi Dockerfile.sh 
+
+ ---INSERT---
+    FROM nginx
+    MAINTAINER "dockerhub_email"
+
+---->vi docker-compose.yml
+
+  ---INSERT---
+    version: "3.2"
+services:
+  app:
+    image: flipkart
+    build: .
+
+---->docker-compose up --build
+
+------------------------------------------------------------------------------------
+3.
+First we have to make directry
+---->mkdir app
+---->cd app/
+
+pull one httpd image with the port number 80 and container name was app
+
+---->docker run -it -d --name app -p 80:80 httpd
+
+then go the inside the container
+---->docker exec --t app
+      type:  --exit--
+
+ after go inside the directory 
+ 
+---->docker cp app:/usr/local/apache2/htdocs/index.html ./index.html
+---->ls
+---->vi index.html
+  then edit the html code
+---->docker cp index.html app:/usr/local/apache2/htdocs/index.html
+
+chech the response current terminal ipv4address:port number  13.201.230.16:80
+
+ 
+ 
+2.DOCKER VOLUME
+***************
+
+
+
+
+
+??????????????????????????????????????????
+
+
+
+
+
+3.‎DOCKER NETWORK
+***************
+first we have to create network
+
+-->docker network create network
+
+then we want to attach the network
+-->docker run -it -d --name app -p 80:80 --network ghost httpd
+********************************************************************
+
+4.DOCKER SWARM
+*************
+1.MASTER NODE
+-------------
+First we want to initialize master terminal
+---->docker swarm init
+
+  WE GET---(docker swarm join --token SWMTKN-1-1zaty6abt23qvrfgnfxfev7w2ndt0q4266ia6un4xylc94aee8-10xkc4olayy2eh6ta9meqhiab 172.31.2.152:2377)
+             inside bracket we want to paste worker terminal -->sudo (paste)
+
+check the nodes one is default
+
+---->docker node ls
+---->docker service create --replicas=4 -p 80:80 --name login httpd
+---->docker node ls
+
+example
+
+ID                            HOSTNAME                                      STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+rcqodyqkoerkq75gy81xyuv5y     ip-172-31-0-35.ap-south-1.compute.internal    Ready     Active                          25.0.8
+sgitp350ysiy0rti0vmmytxjz *   ip-172-31-2-152.ap-south-1.compute.internal   Ready     Active         Leader           25.0.8
+ 
+copy one host id without manager status
+
+---->docker node promote (paste host id)
+   now your worker terminal you can access
+ 
+---->docker node demote (paste host id)
+   now your worker terminal you cannot access 
+ 
+you can add extra container use the below command
+---->docker service scale login=4 
+
+
+
+2.WORKER NODE
+-------------
+     create another terminal and install docker 
+---->sudo (paste) 
+when master node is promote your host you can access this terminal. master node is demote you cannot access 

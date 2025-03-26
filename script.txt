@@ -1,0 +1,13 @@
+FROM httpd
+MAINTAINER "rabeekr900@gmail.com"
+RUN yum update -y
+RUN yum install wget tar gzip -y
+RUN yum install java*-17 -y
+RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.102/bin/apache-tomcat-9.0.102.tar.gz
+RUN tar -zwvf apache-tomcat-9.0.102.tar.gz
+RUN sh apache-tomcat-9.0.102/bin/startup.sh
+
+~
+~
+~
+~

@@ -1,0 +1,54 @@
+1. FROM openjdk:11-jdk-slim                                    
+   WORKDIR /app
+   COPY hello_devops.java .
+   RUN javac Hello_Devops.java
+   CMD["java","Hello_Devops"]
+
+
+2. FROM openjdk:11-jdk-slim
+   WORKDIR /app
+   COPY ..
+   RUN ./mvnw package
+   CMD["java","-jar","target/hello-Devops-spring.jar"]
+
+
+3. FROM python:3.9-slim
+   WORKDIR /app
+   COPY Hello_Devops.py .
+   CMD["python","Hello_Devops.py"]
+
+
+4. FROM python:3.9-slim
+   WORKDIR /app
+   COPY requirments.txt requirments.txt
+   RUN pip install -r requirements.txt
+   COPY ..
+   CMD["python","app.py"]
+
+
+5. FROM node
+   WORKDIR /app
+   COPY package*.json ./
+   RUN npm install
+   COPY ..
+   CMD["node","app.js"]
+
+
+6. FROM amazonlinux
+   MAINTAINER "rabeekr900@gmail.com"
+   RUN yum install java-17* -y
+   WORKDIR /app
+   COPY Hello_Devops.java .
+   RUN javac Hello_Devops.java
+   CMD["java","Hello_Devops"]
+
+
+7. FROM httpd
+   MAINTAINER "rabeekr900@gmail.com"
+   RUN yum update -y
+   RUN yum install wget tar gzip -y
+   RUN yum install java*-17 -y
+   RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.102/bin/apache-tomcat-9.0.102.tar.gz
+   RUN tar -zwvf apache-tomcat-9.0.102.tar.gz
+   RUN sh apache-tomcat-9.0.102/bin/startup.sh
+   
